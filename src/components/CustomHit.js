@@ -22,7 +22,7 @@ const CustomHit = ({ hit }) => {
       {RESULT_FIELDS.map(
         (_field, _key) =>
           !!hit[_field.label] && (
-            <li>
+            <li key={_key}>
               {_field.highlightable ? (
                 <Hit hit={hit} label={_field.label} />
               ) : (
