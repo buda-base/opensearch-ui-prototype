@@ -154,31 +154,31 @@ const SearchPage = () => {
             <RefinementList attribute="script" /> */}
 
             <div className="filter-title">inCollection</div>
-            <RefinementList attribute="inCollection" />
+            <RefinementList attribute="inCollection" showMore={true} />
 
             <div className="filter-title">associatedTradition</div>
-            <RefinementList attribute="associatedTradition" />
+            <RefinementList attribute="associatedTradition" showMore={true} />
 
             <div className="filter-title">personGender</div>
-            <RefinementList attribute="personGender" />
+            <RefinementList attribute="personGender" showMore={true} />
 
             <div className="filter-title">printMethod</div>
-            <RefinementList attribute="printMethod" />
+            <RefinementList attribute="printMethod" showMore={true} />
 
             <div className="filter-title">script</div>
-            <RefinementList attribute="script" />
+            <RefinementList attribute="script" showMore={true} />
 
             <div className="filter-title">workIsAbout</div>
-            <RefinementList attribute="workIsAbout" />
+            <RefinementList attribute="workIsAbout" showMore={true} />
 
             <div className="filter-title">workGenre</div>
-            <RefinementList attribute="workGenre" />
+            <RefinementList attribute="workGenre" showMore={true} />
 
             <div className="filter-title">author</div>
-            <RefinementList attribute="author" />
+            <RefinementList attribute="author" showMore={true} />
 
             <div className="filter-title">translator</div>
-            <RefinementList attribute="translator" />
+            <RefinementList attribute="translator" showMore={true} />
           </div>
           <div>
             <div className="search">
