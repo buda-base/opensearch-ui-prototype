@@ -103,6 +103,7 @@ const SearchPage = () => {
     <div className="App">
       <InstantSearch
         indexName={process.env.REACT_APP_ELASTICSEARCH_INDEX}
+        routing={true}
         searchClient={searchClient}
       >
         <div className="content">
