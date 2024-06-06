@@ -57,6 +57,12 @@ const SearchPage = () => {
 
             <div className="filter-title">translator</div>
             <RefinementList attribute="translator" showMore={true} />
+
+            <div className="filter-title">type</div>
+            <RefinementList attribute="type" showMore={true} />
+
+            <div className="filter-title">associatedCentury</div>
+            <RefinementList attribute="associatedCentury" showMore={true} />
           </div>
           <div>
             <div className="search">

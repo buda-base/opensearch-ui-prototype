@@ -27,6 +27,16 @@ const FACET_ATTRIBUTES = [
     field: "translator",
     type: "string",
   },
+  {
+    attribute: "type",
+    field: "type",
+    type: "string",
+  },
+  {
+    attribute: "associatedCentury",
+    field: "associatedCentury",
+    type: "string",
+  },
 ];
 
 export { FACET_ATTRIBUTES };
