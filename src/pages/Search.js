@@ -14,6 +14,7 @@ import {
   Pagination,
   Configure,
 } from "react-instantsearch";
+import { history } from "instantsearch.js/es/lib/routers";
 
 // import { InstantSearch } from "react-instantsearch-dom";
 
@@ -26,6 +27,53 @@ import {
   RESULT_FIELDS,
   HIGHLIGHT_FIELDS,
 } from "../constants/fields";
+
+const FACET_ATTRIBUTES = [
+  {
+    attribute: "language",
+    field: "language",
+    type: "string",
+  },
+  {
+    attribute: "script",
+    field: "script",
+    type: "string",
+  },
+
+  { attribute: "inCollection", field: "inCollection", type: "string" },
+  {
+    attribute: "associatedTradition",
+    field: "associatedTradition",
+    type: "string",
+  },
+  { attribute: "personGender", field: "personGender", type: "string" },
+  { attribute: "printMethod", field: "printMethod", type: "string" },
+  { attribute: "script", field: "script", type: "string" },
+  { attribute: "workIsAbout", field: "workIsAbout", type: "string" },
+  { attribute: "workGenre", field: "workGenre", type: "string" },
+  { attribute: "author", field: "author", type: "string" },
+  {
+    attribute: "translator",
+    field: "translator",
+    type: "string",
+    facetResponse: (aggregation) => {
+      const buckets = aggregation.buckets;
+      const test = Object.values(buckets).reduce(
+        (sum, bucket) => ({
+          ...sum,
+          [`${bucket.key} - test`]: bucket.doc_count,
+        }),
+        {}
+      );
+
+      return test;
+    },
+    filterQuery: (field, value) => {
+      // make your own request
+      return { match: { [field]: value.split(" - test")[0] } };
+    },
+  },
+];
 
 // Create a Searchkit client
 // This is the configuration for Searchkit, specifying the fields to attributes used for search, facets, etc.
@@ -46,54 +94,46 @@ const sk = new Searchkit({
     highlight_attributes: HIGHLIGHT_FIELDS.filter(
       (_field) => _field.highlightable
     ).map((_field) => _field.label),
-    facet_attributes: [
-      {
-        attribute: "language",
-        field: "language", // field must be a keyword type field
-        type: "string",
-      },
-      {
-        attribute: "script",
-        field: "script", // field must be a keyword type field
-        type: "string",
-      },
-
-      { attribute: "inCollection", field: "inCollection", type: "string" },
-      {
-        attribute: "associatedTradition",
-        field: "associatedTradition",
-        type: "string",
-      },
-      { attribute: "personGender", field: "personGender", type: "string" },
-      { attribute: "printMethod", field: "printMethod", type: "string" },
-      { attribute: "script", field: "script", type: "string" },
-      { attribute: "workIsAbout", field: "workIsAbout", type: "string" },
-      { attribute: "workGenre", field: "workGenre", type: "string" },
-      { attribute: "author", field: "author", type: "string" },
-      {
-        attribute: "translator",
-        field: "translator",
-        type: "string",
-        facetResponse: (aggregation) => {
-          const buckets = aggregation.buckets;
-          const test = Object.values(buckets).reduce(
-            (sum, bucket) => ({
-              ...sum,
-              [`${bucket.key} - test`]: bucket.doc_count,
-            }),
-            {}
-          );
-
-          return test;
-        },
-        filterQuery: (field, value) => {
-          // make your own request
-          return { match: { [field]: value.split(" - test")[0] } };
-        },
-      },
-    ],
+    facet_attributes: FACET_ATTRIBUTES,
   },
 });
+
+const routing = {
+  router: history(),
+  stateMapping: {
+    stateToRoute(uiState) {
+      const indexUiState = uiState[process.env.REACT_APP_ELASTICSEARCH_INDEX];
+      return {
+        q: indexUiState.query,
+        ...FACET_ATTRIBUTES.reduce(
+          (obj, item) =>
+            Object.assign(obj, {
+              [item.attribute]: indexUiState.refinementList?.[item.attribute],
+            }),
+          {}
+        ),
+        page: indexUiState.page,
+      };
+    },
+    routeToState(routeState) {
+      return {
+        [process.env.REACT_APP_ELASTICSEARCH_INDEX]: {
+          query: routeState.q,
+          refinementList: {
+            ...FACET_ATTRIBUTES.reduce(
+              (obj, item) =>
+                Object.assign(obj, {
+                  [item.attribute]: routeState?.[item.attribute],
+                }),
+              {}
+            ),
+          },
+          page: routeState.page,
+        },
+      };
+    },
+  },
+};
 
 const searchClient = Client(sk);
 
@@ -103,7 +143,7 @@ const SearchPage = () => {
     <div className="App">
       <InstantSearch
         indexName={process.env.REACT_APP_ELASTICSEARCH_INDEX}
-        routing={true}
+        routing={routing}
         searchClient={searchClient}
       >
         <div className="content">
