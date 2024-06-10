@@ -23,6 +23,64 @@ const forgeUserAggregateFacets = (facets, size) => {
   }, {});
 };
 
+const getCustomQuery = (query, filter) => {
+  return {
+    bool: {
+      filter: filter,
+      must: [
+        {
+          multi_match: {
+            type: "phrase",
+            query: query,
+            fields: [
+              "seriesName_bo_x_ewts^2",
+              "seriesName_en^2",
+              "authorshipStatement_bo_x_ewts",
+              "authorshipStatement_en",
+              "publisherName_bo_x_ewts",
+              "publisherLocation_bo_x_ewts",
+              "publisherName_en",
+              "publisherLocation_en",
+              "prefLabel_bo_x_ewts^5",
+              "prefLabel_en^5",
+              "comment_bo_x_ewts",
+              "comment_en",
+              "altLabel_bo_x_ewts^4",
+              "altLabel_en^4",
+            ],
+          },
+        },
+        {
+          multi_match: {
+            type: "phrase_prefix",
+            query: query,
+            fields: [
+              "seriesName_bo_x_ewts^2",
+              "seriesName_en^2",
+              "authorshipStatement_bo_x_ewts",
+              "authorshipStatement_en",
+              "publisherName_bo_x_ewts",
+              "publisherLocation_bo_x_ewts",
+              "publisherName_en",
+              "publisherLocation_en",
+              "prefLabel_bo_x_ewts^5",
+              "prefLabel_en^5",
+              "comment_bo_x_ewts",
+              "comment_en",
+              "altLabel_bo_x_ewts^4",
+              "altLabel_en^4",
+            ],
+          },
+        },
+      ],
+    },
+  };
+};
+
+const getDefaultQuery = (filter) => {
+  return { bool: { filter: filter, must: { match_all: {} } } };
+};
+
 const getCustomizedBdrcIndexRequest = (request) => {
   let clonedRequest = Object.assign({}, request);
   const userInput = request?.request?.params?.query || "";
@@ -53,57 +111,10 @@ const getCustomizedBdrcIndexRequest = (request) => {
         content_en: {},
       },
     },
-    query: {
-      bool: {
-        filter: userQueryFacetFilters,
-        must: [
-          {
-            multi_match: {
-              type: "phrase",
-              query: userInput,
-              fields: [
-                "seriesName_bo_x_ewts^2",
-                "seriesName_en^2",
-                "authorshipStatement_bo_x_ewts",
-                "authorshipStatement_en",
-                "publisherName_bo_x_ewts",
-                "publisherLocation_bo_x_ewts",
-                "publisherName_en",
-                "publisherLocation_en",
-                "prefLabel_bo_x_ewts^5",
-                "prefLabel_en^5",
-                "comment_bo_x_ewts",
-                "comment_en",
-                "altLabel_bo_x_ewts^4",
-                "altLabel_en^4",
-              ],
-            },
-          },
-          {
-            multi_match: {
-              type: "phrase_prefix",
-              query: userInput,
-              fields: [
-                "seriesName_bo_x_ewts^2",
-                "seriesName_en^2",
-                "authorshipStatement_bo_x_ewts",
-                "authorshipStatement_en",
-                "publisherName_bo_x_ewts",
-                "publisherLocation_bo_x_ewts",
-                "publisherName_en",
-                "publisherLocation_en",
-                "prefLabel_bo_x_ewts^5",
-                "prefLabel_en^5",
-                "comment_bo_x_ewts",
-                "comment_en",
-                "altLabel_bo_x_ewts^4",
-                "altLabel_en^4",
-              ],
-            },
-          },
-        ],
-      },
-    },
+    query:
+      userInput !== ""
+        ? getCustomQuery(userInput, userQueryFacetFilters)
+        : getDefaultQuery(userQueryFacetFilters),
   };
 
   return clonedRequest;
