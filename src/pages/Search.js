@@ -7,6 +7,9 @@ import Client from "@searchkit/instantsearch-client";
 // Config
 import SearchkitConfig, { routingConfig } from "../searchkit.config";
 
+// API
+import { getCustomizedBdrcIndexRequest } from "../api/ElasticAPI";
+
 // Components
 import {
   InstantSearch,
@@ -19,7 +22,24 @@ import {
 
 import CustomHit from "../components/CustomHit";
 
-const searchClient = Client(SearchkitConfig);
+const searchClient = Client(
+  SearchkitConfig,
+  {
+    hooks: {
+      beforeSearch: async (requests) => {
+        const customizedRequest = requests.map((request) => {
+          if (request.indexName === process.env.REACT_APP_ELASTICSEARCH_INDEX) {
+            return getCustomizedBdrcIndexRequest(request);
+          }
+          return request;
+        });
+
+        return customizedRequest;
+      },
+    },
+  },
+  { debug: process.env.NODE_ENV === "development" }
+);
 
 const SearchPage = () => {
   return (
