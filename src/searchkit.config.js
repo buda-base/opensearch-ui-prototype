@@ -34,7 +34,9 @@ const SearchkitConfig = new Searchkit({
 });
 
 const routingConfig = {
-  router: history(),
+  router: history({
+    cleanUrlOnDispose: false,
+  }),
   stateMapping: {
     stateToRoute(uiState) {
       const indexUiState = uiState[process.env.REACT_APP_ELASTICSEARCH_INDEX];
