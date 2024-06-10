@@ -84,7 +84,7 @@ const SearchPage = () => {
             <div className="filter-title">associatedCentury</div>
             <RefinementList attribute="associatedCentury" showMore={true} />
           </div>
-          <div>
+          <div className="main-content">
             <div className="search">
               <SearchBox />
             </div>
