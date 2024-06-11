@@ -33,6 +33,7 @@ const getCustomQuery = (query, filter) => {
       },
       query: {
         bool: {
+          filter: filter,
           must: [
             {
               multi_match: {
