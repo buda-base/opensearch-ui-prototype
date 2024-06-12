@@ -87,7 +87,16 @@ const getCustomQuery = (query, filter) => {
 };
 
 const getDefaultQuery = (filter) => {
-  return { bool: { filter: filter, must: { match_all: {} } } };
+  return {
+    bool: {
+      filter: filter,
+      must: {
+        rank_feature: {
+          field: "pop_score_rk",
+        },
+      },
+    },
+  };
 };
 
 const getCustomizedBdrcIndexRequest = (request) => {
