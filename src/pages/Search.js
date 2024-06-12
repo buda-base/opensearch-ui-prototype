@@ -21,6 +21,7 @@ import {
 } from "react-instantsearch";
 
 import CustomHit from "../components/CustomHit";
+import CustomDateRange from "../components/CustomDateRange";
 
 const searchClient = Client(
   SearchkitConfig,
@@ -53,6 +54,9 @@ const SearchPage = () => {
           <div className="filter">
             <div className="filter-title">type</div>
             <RefinementList attribute="type" showMore={true} />
+
+            <div className="filter-title">firstScanSyncDate</div>
+            <CustomDateRange attribute="firstScanSyncDate" />
 
             <div className="filter-title">inCollection</div>
             <RefinementList attribute="inCollection" showMore={true} />

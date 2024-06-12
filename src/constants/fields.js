@@ -76,10 +76,12 @@ const NO_KEYWORD_FIELD = [
   { label: "etext_access", highlightable: false },
 ];
 
+const DATE_RANGE_FIELDS = ["firstScanSyncDate"];
+
 const SEARCH_FIELDS = [...ALL_FIELDS];
 
 const RESULT_FIELDS = [...ALL_FIELDS, ...NO_KEYWORD_FIELD];
 
 const HIGHLIGHT_FIELDS = [...ALL_FIELDS];
 
-export { SEARCH_FIELDS, RESULT_FIELDS, HIGHLIGHT_FIELDS };
+export { SEARCH_FIELDS, RESULT_FIELDS, HIGHLIGHT_FIELDS, DATE_RANGE_FIELDS };

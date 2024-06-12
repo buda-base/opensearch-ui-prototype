@@ -30,6 +30,13 @@ const SearchkitConfig = new Searchkit({
       (_field) => _field.highlightable
     ).map((_field) => _field.label),
     facet_attributes: FACET_ATTRIBUTES,
+    filter_attributes: [
+      {
+        attribute: "firstScanSyncDate",
+        field: "firstScanSyncDate",
+        type: "date",
+      },
+    ],
   },
 });
 

@@ -1,12 +1,27 @@
-const forgeFacetFilters = (facetFilters) => {
-  return facetFilters.map((group) => ({
+const DATE_RANGE_FIELDS = ["firstScanSyncDate"];
+
+const forgeFacetFilters = (facetFilters, filters) => {
+  let allFilters = [];
+  if (facetFilters.length > 0) {
+    allFilters = [...allFilters, ...facetFilters];
+  }
+  if (filters) {
+    allFilters = [...allFilters, [filters]];
+  }
+
+  let queryFilters = allFilters.map((group) => ({
     bool: {
       should: group.map((facet) => {
         const [field, value] = facet.split(":");
+        if (DATE_RANGE_FIELDS.includes(field)) {
+          return { range: { [field]: createDateRangeQuery(value) } };
+        }
         return { term: { [field]: value } };
       }),
     },
   }));
+
+  return queryFilters;
 };
 
 const forgeUserAggregateFacets = (facets, size) => {
@@ -22,6 +37,31 @@ const forgeUserAggregateFacets = (facets, size) => {
     return acc;
   }, {});
 };
+
+function createDateRangeQuery(dateRangeString) {
+  const regex = /\[(.*) TO (.*)\]/;
+  const matches = dateRangeString.match(regex);
+
+  if (!matches) {
+    throw new Error("Invalid date range string");
+  }
+
+  const [, startDate, endDate] = matches;
+
+  // console.log(_);
+
+  const query = {};
+
+  if (startDate !== "*") {
+    query.gte = startDate;
+  }
+
+  if (endDate !== "*") {
+    query.lte = endDate;
+  }
+
+  return query;
+}
 
 const getCustomQuery = (query, filter) => {
   return {
@@ -108,9 +148,13 @@ const getCustomizedBdrcIndexRequest = (request) => {
   const userFacets = request?.request?.params?.facets || [];
   const userMaxValuePerFacets =
     request?.request?.params?.maxValuesPerFacet || 20;
+  const userFilters = request?.request?.params?.filters;
 
   // Queries
-  const userQueryFacetFilters = forgeFacetFilters(userFacetFilters);
+  const userQueryFacetFilters = forgeFacetFilters(
+    userFacetFilters,
+    userFilters
+  );
   const userAggregates = forgeUserAggregateFacets(
     userFacets,
     userMaxValuePerFacets
@@ -138,4 +182,4 @@ const getCustomizedBdrcIndexRequest = (request) => {
   return clonedRequest;
 };
 
-export { getCustomizedBdrcIndexRequest };
+export { getCustomizedBdrcIndexRequest, createDateRangeQuery };
