@@ -125,7 +125,6 @@ const SearchBoxAutocomplete = (props) => {
       getAutocompleteRequest(newValue).then((requests) => {
         setSuggestions(requests);
       });
-      // You can perform any action with the newValue here, such as making an API call
     }, 350),
     []
   );
