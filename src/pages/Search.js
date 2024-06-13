@@ -20,7 +20,9 @@ import {
   Configure,
 } from "react-instantsearch";
 
+// Custom
 import CustomHit from "../components/CustomHit";
+import SearchBoxAutocomplete from "../components/SearchBoxAutocomplete";
 
 const searchClient = Client(
   SearchkitConfig,
@@ -86,7 +88,7 @@ const SearchPage = () => {
           </div>
           <div className="main-content">
             <div className="search">
-              <SearchBox />
+              <SearchBoxAutocomplete />
             </div>
             <div className="hits">
               <Configure hitsPerPage={20} />
