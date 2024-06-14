@@ -20,8 +20,14 @@ import {
   Configure,
 } from "react-instantsearch";
 
+// Custom
 import CustomHit from "../components/CustomHit";
+<<<<<<< HEAD
 import CustomDateRange from "../components/CustomDateRange";
+=======
+import SearchBoxAutocomplete from "../components/SearchBoxAutocomplete";
+import RefinementListWithLabels from "../components/RefinementListWithLabels";
+>>>>>>> main
 
 const searchClient = Client(
   SearchkitConfig,
@@ -59,7 +65,10 @@ const SearchPage = () => {
             <CustomDateRange attribute="firstScanSyncDate" />
 
             <div className="filter-title">inCollection</div>
-            <RefinementList attribute="inCollection" showMore={true} />
+            <RefinementListWithLabels
+              attribute="inCollection"
+              showMore={true}
+            />
 
             <div className="filter-title">associatedTradition</div>
             <RefinementList attribute="associatedTradition" showMore={true} />
@@ -74,23 +83,23 @@ const SearchPage = () => {
             <RefinementList attribute="script" showMore={true} />
 
             <div className="filter-title">workIsAbout</div>
-            <RefinementList attribute="workIsAbout" showMore={true} />
+            <RefinementListWithLabels attribute="workIsAbout" showMore={true} />
 
             <div className="filter-title">workGenre</div>
-            <RefinementList attribute="workGenre" showMore={true} />
+            <RefinementListWithLabels attribute="workGenre" showMore={true} />
 
             <div className="filter-title">author</div>
-            <RefinementList attribute="author" showMore={true} />
+            <RefinementListWithLabels attribute="author" showMore={true} />
 
             <div className="filter-title">translator</div>
-            <RefinementList attribute="translator" showMore={true} />
+            <RefinementListWithLabels attribute="translator" showMore={true} />
 
             <div className="filter-title">associatedCentury</div>
             <RefinementList attribute="associatedCentury" showMore={true} />
           </div>
           <div className="main-content">
             <div className="search">
-              <SearchBox />
+              <SearchBoxAutocomplete />
             </div>
             <div className="hits">
               <Configure hitsPerPage={20} />
