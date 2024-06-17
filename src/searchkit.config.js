@@ -59,6 +59,26 @@ const SearchkitConfig = new Searchkit({
   },
 });
 
+const formatFirstScanSyncDateRangeFromUiState = (uiState) => {
+  const { configure = {} } = uiState;
+
+  let result = {};
+
+  if (configure.filters) {
+    const attribute = configure.filters.split(":")[0];
+
+    const filters = configure.filters.split(":")[1];
+
+    const [beforeDate, afterDate] = filters
+      .replace(/[\[\]]/g, "")
+      .split(" TO ");
+    if (beforeDate !== "*") result[`${attribute}_before`] = beforeDate;
+    if (afterDate !== "*") result[`${attribute}_after`] = afterDate;
+  }
+
+  return result;
+};
+
 const routingConfig = {
   router: history({
     cleanUrlOnDispose: false,
@@ -66,6 +86,12 @@ const routingConfig = {
   stateMapping: {
     stateToRoute(uiState) {
       const indexUiState = uiState[process.env.REACT_APP_ELASTICSEARCH_INDEX];
+      const firstScanSyncDate =
+        formatFirstScanSyncDateRangeFromUiState(indexUiState);
+
+      const { firstScanSyncDate_before, firstScanSyncDate_after } =
+        firstScanSyncDate;
+
       return {
         q: indexUiState.query,
         ...FACET_ATTRIBUTES.reduce(
@@ -76,10 +102,13 @@ const routingConfig = {
           {}
         ),
         sortBy: indexUiState.sortBy,
+        firstScanSyncDate_before,
+        firstScanSyncDate_after,
         page: indexUiState.page,
       };
     },
     routeToState(routeState) {
+      const { firstScanSyncDate_before, firstScanSyncDate_after } = routeState;
       return {
         [process.env.REACT_APP_ELASTICSEARCH_INDEX]: {
           query: routeState.q,
@@ -94,6 +123,11 @@ const routingConfig = {
           },
           sortBy: routeState.sortBy,
           page: routeState.page,
+          firstScanSyncDate_before,
+          firstScanSyncDate_after,
+          filters: `firstScanSyncDate:[${firstScanSyncDate_before || "*"} TO ${
+            firstScanSyncDate_after || "*"
+          }]`,
         },
       };
     },

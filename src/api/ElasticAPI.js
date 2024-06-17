@@ -48,8 +48,6 @@ function createDateRangeQuery(dateRangeString) {
 
   const [, startDate, endDate] = matches;
 
-  // console.log(_);
-
   const query = {};
 
   if (startDate !== "*") {
@@ -182,4 +180,46 @@ const getCustomizedBdrcIndexRequest = (request) => {
   return clonedRequest;
 };
 
-export { getCustomizedBdrcIndexRequest, createDateRangeQuery };
+const formatAutosuggestReponse = (hits, source = "autosuggest") => {
+  if (source === "opensearch") {
+    return hits?.hits.map((_hit) => {
+      return {
+        lang: _hit._source.language && _hit?._source?.language[0],
+        res: _hit?._source?.prefLabel_bo_x_ewts,
+        category: "",
+      };
+    });
+  }
+  return hits;
+};
+
+const getAutocompleteElasticRequest = async (queryStr) => {
+  const response = await fetch(
+    `${process.env.REACT_APP_ELASTICSEARCH_HOST}/_search`,
+    {
+      headers: {
+        Authorization: `Basic ${process.env.REACT_APP_ELASTICSEARCH_BASIC_AUTH}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: {
+          match_phrase_prefix: {
+            prefLabel_bo_x_ewts: {
+              query: queryStr,
+            },
+          },
+        },
+      }),
+      method: "POST",
+    }
+  );
+
+  return formatAutosuggestReponse(response.json(), "opensearch");
+  // return [];
+};
+
+export {
+  getCustomizedBdrcIndexRequest,
+  getAutocompleteElasticRequest,
+  createDateRangeQuery,
+};

@@ -9,6 +9,20 @@ const MyDateRange = (props) => {
   const [request, setRequest] = useState();
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+
+    for (const p of searchParams) {
+      console.log("p", p);
+      if (p[0] === `${attribute}_before`) {
+        setBeforeDate(p[1]);
+      }
+      if (p[0] === `${attribute}_after`) {
+        setAfterDate(p[1]);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     let newRequest;
 
     if (beforeDate && afterDate) {
