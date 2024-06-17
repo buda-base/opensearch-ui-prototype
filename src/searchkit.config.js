@@ -39,8 +39,13 @@ const SearchkitConfig = new Searchkit({
         field: "firstScanSyncDate",
         order: "desc",
       },
-      firstScanSyncDate_asc: {
-        field: "firstScanSyncDate",
+      publicationDate_desc: {
+        field: "publicationDate",
+        order: "desc",
+      },
+
+      publicationDate_asc: {
+        field: "publicationDate",
         order: "asc",
       },
     },

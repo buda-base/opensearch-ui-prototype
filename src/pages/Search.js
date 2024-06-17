@@ -59,14 +59,23 @@ const SearchPage = () => {
 
             <SortBy
               items={[
-                { label: "default", value: "bdrc_prod" },
                 {
-                  label: "first scan sync date (desc)",
-                  value: "firstScanSyncDate_desc",
+                  label: "default",
+                  value: process.env.REACT_APP_ELASTICSEARCH_INDEX,
                 },
                 {
-                  label: "first scan sync date (asc)",
-                  value: "firstScanSyncDate_asc",
+                  label: "sync scan date",
+                  value: "firstScanSyncDate_desc",
+                },
+
+                {
+                  label: "publication date (most recent) ",
+                  value: "publicationDate_desc",
+                },
+
+                {
+                  label: "publication date (oldest)",
+                  value: "publicationDate_asc",
                 },
               ]}
             />
