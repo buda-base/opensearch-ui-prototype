@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/opensearch-ui-prototype/static/css/main.33d43cfa.css",
-    "main.js": "/opensearch-ui-prototype/static/js/main.958a38b7.js",
+    "main.js": "/opensearch-ui-prototype/static/js/main.713fff7b.js",
     "static/js/453.a5d6e5df.chunk.js": "/opensearch-ui-prototype/static/js/453.a5d6e5df.chunk.js",
     "index.html": "/opensearch-ui-prototype/index.html",
     "main.33d43cfa.css.map": "/opensearch-ui-prototype/static/css/main.33d43cfa.css.map",
-    "main.958a38b7.js.map": "/opensearch-ui-prototype/static/js/main.958a38b7.js.map",
+    "main.713fff7b.js.map": "/opensearch-ui-prototype/static/js/main.713fff7b.js.map",
     "453.a5d6e5df.chunk.js.map": "/opensearch-ui-prototype/static/js/453.a5d6e5df.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.33d43cfa.css",
-    "static/js/main.958a38b7.js"
+    "static/js/main.713fff7b.js"
   ]
 }
