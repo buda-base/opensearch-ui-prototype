@@ -79,6 +79,8 @@ const SearchPage = () => {
               attribute="inCollection"
               showMore={true}
             />
+            <div className="filter-title">language</div>
+            <RefinementList attribute="language" showMore={true} />
 
             <div className="filter-title">associatedTradition</div>
             <RefinementList attribute="associatedTradition" showMore={true} />
