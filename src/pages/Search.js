@@ -18,6 +18,7 @@ import {
   RefinementList,
   Pagination,
   Configure,
+  SortBy,
 } from "react-instantsearch";
 
 // Custom
@@ -55,6 +56,31 @@ const SearchPage = () => {
       >
         <div className="content">
           <div className="filter">
+            <div className="filter-title">Sort by</div>
+
+            <SortBy
+              items={[
+                {
+                  label: "default",
+                  value: process.env.REACT_APP_ELASTICSEARCH_INDEX,
+                },
+                {
+                  label: "sync scan date",
+                  value: "firstScanSyncDate_desc",
+                },
+
+                {
+                  label: "publication date (most recent) ",
+                  value: "publicationDate_desc",
+                },
+
+                {
+                  label: "publication date (oldest)",
+                  value: "publicationDate_asc",
+                },
+              ]}
+            />
+
             <div className="filter-title">type</div>
             <RefinementList attribute="type" showMore={true} />
 
@@ -66,6 +92,8 @@ const SearchPage = () => {
               attribute="inCollection"
               showMore={true}
             />
+            <div className="filter-title">language</div>
+            <RefinementList attribute="language" showMore={true} />
 
             <div className="filter-title">associatedTradition</div>
             <RefinementList attribute="associatedTradition" showMore={true} />

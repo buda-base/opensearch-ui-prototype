@@ -37,6 +37,25 @@ const SearchkitConfig = new Searchkit({
         type: "date",
       },
     ],
+    sorting: {
+      default: {
+        field: "bdrc_prod",
+        order: "desc",
+      },
+      firstScanSyncDate_desc: {
+        field: "firstScanSyncDate",
+        order: "desc",
+      },
+      publicationDate_desc: {
+        field: "publicationDate",
+        order: "desc",
+      },
+
+      publicationDate_asc: {
+        field: "publicationDate",
+        order: "asc",
+      },
+    },
   },
 });
 
@@ -56,6 +75,7 @@ const routingConfig = {
             }),
           {}
         ),
+        sortBy: indexUiState.sortBy,
         page: indexUiState.page,
       };
     },
@@ -72,6 +92,7 @@ const routingConfig = {
               {}
             ),
           },
+          sortBy: routeState.sortBy,
           page: routeState.page,
         },
       };
