@@ -18,6 +18,7 @@ import {
   RefinementList,
   Pagination,
   Configure,
+  SortBy,
 } from "react-instantsearch";
 
 // Custom
@@ -54,6 +55,22 @@ const SearchPage = () => {
       >
         <div className="content">
           <div className="filter">
+            <div className="filter-title">Sort by</div>
+
+            <SortBy
+              items={[
+                { label: "default", value: "bdrc_prod" },
+                {
+                  label: "first scan sync date (desc)",
+                  value: "firstScanSyncDate_desc",
+                },
+                {
+                  label: "first scan sync date (asc)",
+                  value: "firstScanSyncDate_asc",
+                },
+              ]}
+            />
+
             <div className="filter-title">type</div>
             <RefinementList attribute="type" showMore={true} />
 

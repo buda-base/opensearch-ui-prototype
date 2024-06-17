@@ -30,6 +30,20 @@ const SearchkitConfig = new Searchkit({
       (_field) => _field.highlightable
     ).map((_field) => _field.label),
     facet_attributes: FACET_ATTRIBUTES,
+    sorting: {
+      default: {
+        field: "bdrc_prod",
+        order: "desc",
+      },
+      firstScanSyncDate_desc: {
+        field: "firstScanSyncDate",
+        order: "desc",
+      },
+      firstScanSyncDate_asc: {
+        field: "firstScanSyncDate",
+        order: "asc",
+      },
+    },
   },
 });
 
@@ -49,6 +63,7 @@ const routingConfig = {
             }),
           {}
         ),
+        sortBy: indexUiState.sortBy,
         page: indexUiState.page,
       };
     },
@@ -65,6 +80,7 @@ const routingConfig = {
               {}
             ),
           },
+          sortBy: routeState.sortBy,
           page: routeState.page,
         },
       };
