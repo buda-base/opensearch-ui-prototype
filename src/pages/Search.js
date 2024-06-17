@@ -22,12 +22,9 @@ import {
 
 // Custom
 import CustomHit from "../components/CustomHit";
-<<<<<<< HEAD
 import CustomDateRange from "../components/CustomDateRange";
-=======
 import SearchBoxAutocomplete from "../components/SearchBoxAutocomplete";
 import RefinementListWithLabels from "../components/RefinementListWithLabels";
->>>>>>> main
 
 const searchClient = Client(
   SearchkitConfig,
