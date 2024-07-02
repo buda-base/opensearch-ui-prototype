@@ -50,7 +50,6 @@ const SearchkitConfig = new Searchkit({
         field: "publicationDate",
         order: "desc",
       },
-
       publicationDate_asc: {
         field: "publicationDate",
         order: "asc",

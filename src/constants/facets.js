@@ -50,7 +50,7 @@ const FACET_ATTRIBUTES = [
   { 
     attribute: "etext_quality",
     field: "etext_quality",
-    type: "numeric"
+    type: "float"
   }
 ];
 

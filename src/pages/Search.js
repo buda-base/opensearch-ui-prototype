@@ -95,7 +95,9 @@ const SearchPage = () => {
             <RefinementList attribute="etext_access" showMore={true} />
 
             <div className="filter-title">etext quality</div>
-            <NumericList attribute="etext_quality" items={[
+            <RefinementList attribute="etext_quality" />
+            
+            {/*items={[
                 {
                   label:"manual-aligned", start:4, end:4
                 },{

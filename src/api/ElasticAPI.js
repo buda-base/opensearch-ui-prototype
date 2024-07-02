@@ -1,5 +1,7 @@
 const DATE_RANGE_FIELDS = ["firstScanSyncDate"];
 
+const RANGE_FIELDS = ["etext_quality"];
+
 const forgeFacetFilters = (facetFilters, filters) => {
   let allFilters = [];
   if (facetFilters.length > 0) {
@@ -16,6 +18,21 @@ const forgeFacetFilters = (facetFilters, filters) => {
         if (DATE_RANGE_FIELDS.includes(field)) {
           return { range: { [field]: createDateRangeQuery(value) } };
         }
+        if(field === "etext_quality") { 
+          const regex = /^(.*)-(.*)$/;
+          const matches = value.match(regex);
+        
+          if (!matches) {
+            throw new Error("Invalid range string");
+          }
+
+          let [, gte, lte] = matches
+
+          if(gte === "*") gte = null
+          if(lte === "*") lte = null
+          
+          return { range: { [field]: {gte, lte} } }
+        }
         return { term: { [field]: value } };
       }),
     },
@@ -26,13 +43,23 @@ const forgeFacetFilters = (facetFilters, filters) => {
 
 const forgeUserAggregateFacets = (facets, size) => {
   const fields = Array.isArray(facets) ? facets : [facets];
-
+    
   return fields.reduce((acc, field) => {
-    acc[field] = {
-      terms: {
-        field: field,
-        size: size,
-      },
+    let ranges
+    if(field === "etext_quality") { 
+      acc[field] = { 
+        "range":{
+          field,
+          ranges:[{"from":0,"to":0.8},{"from":0.8, "to":0.95},{"from":0.95, "to":1},{"from":1.99, "to":2.01},{"from":2.99, "to":3.01},{"from":3.99, "to":4.01}]
+        }
+      }
+    } else {
+      acc[field] = {
+        "terms": {
+          field: field,
+          size: size
+        },
+      }
     };
     return acc;
   }, {});
