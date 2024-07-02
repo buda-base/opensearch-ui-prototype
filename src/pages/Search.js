@@ -26,6 +26,7 @@ import CustomHit from "../components/CustomHit";
 import CustomDateRange from "../components/CustomDateRange";
 import SearchBoxAutocomplete from "../components/SearchBoxAutocomplete";
 import RefinementListWithLabels from "../components/RefinementListWithLabels";
+import NumericList from "../components/NumericList";
 
 const searchClient = Client(
   SearchkitConfig,
@@ -86,6 +87,70 @@ const SearchPage = () => {
 
             <div className="filter-title">firstScanSyncDate</div>
             <CustomDateRange attribute="firstScanSyncDate" />
+
+            <div className="filter-title">scans access</div>
+            <RefinementList attribute="scans_access" showMore={true} />
+
+            <div className="filter-title">etext access</div>
+            <RefinementList attribute="etext_access" showMore={true} />
+
+            <div className="filter-title">etext quality</div>
+            <NumericList attribute="etext_quality" items={[
+                {
+                  label:"manual-aligned", start:4, end:4
+                },{
+                  label:"manual-unaligned", start:3, end:3
+                },{
+                  label:"revised-OCR", start:2, end:2
+                },{
+                  label:"high", start:0.95, end:1
+                },{
+                  label:"medium", start:0.8, end:0.95
+                },{
+                  label:"poor", start:0, end:0.8
+                }
+              ]}
+            />
+            {/* // display is fine but runtime error filtering on merged items
+            <RefinementList attribute="etext_quality" transformItems={(items) => {
+              const newItems = []
+              let lo, mid, hi
+              for(const item of items) {
+                console.log("item:",item)
+                if([1,2,3,4].includes(Number(item.value))) newItems.push(item)
+                else {
+                  const val = Number(item.value)
+                  if(val > 0.95) {
+                    if(!hi) { 
+                      hi = { ...item, label:"hi", value:window.encodeURI('{"start":0.95,"end":1}') } 
+                    }
+                    else {
+                      hi.count += item.count
+                    }
+                  }
+                  else if(val > 0.8) {
+                    if(!mid) { 
+                      mid = { ...item, label:"mid", value:window.encodeURI('{"start":0.8,"end":0.95}') } 
+                    }
+                    else {
+                      mid.count += item.count
+                    }
+                  }
+                  else if(val > 0) {
+                    if(!lo) { 
+                      lo = { ...item, label:"lo", value:window.encodeURI('{"start":0,"end":0.8}') } 
+                    }
+                    else {
+                      lo.count += item.count
+                    }
+                  }
+                }
+              } 
+              if(hi) newItems.push(hi)
+              if(mid) newItems.push(mid)
+              if(lo) newItems.push(lo)
+              return newItems
+            }}/> */}
 
             <div className="filter-title">inCollection</div>
             <RefinementListWithLabels

@@ -74,6 +74,7 @@ const NO_KEYWORD_FIELD = [
   { label: "ric", highlightable: false },
   { label: "scans_access", highlightable: false },
   { label: "etext_access", highlightable: false },
+  { label: "etext_quality", highlightable: false },
 ];
 
 const DATE_RANGE_FIELDS = ["firstScanSyncDate"];
